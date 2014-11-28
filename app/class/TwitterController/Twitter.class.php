@@ -1,8 +1,9 @@
 <?php
+  
   namespace TwitterController;
 
   interface TwitterInterface{
-    public function getTweets($count);
+    public function getPublicTweets($count);
   }
 
   class Twitter implements TwitterInterface{
@@ -15,8 +16,8 @@
     );
 
 
-    public function getTweets($count){
-      $user_timeline_url = "https://api.twitter.com/1.1/statuses/user_timeline.json";
+    public function getPublicTweets($count){
+      $user_timeline_url = "https://api.twitter.com/1.1/statuses/home_timeline.json";
       $get_field = '?count=' . $count;
 
       $tweets = json_decode($this->connection->setGetfield($get_field)
