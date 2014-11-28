@@ -1,7 +1,11 @@
 <?php
   namespace TwitterController;
 
-  class Twitter{
+  interface TwitterInterface{
+    public function getTweets($count);
+  }
+
+  class Twitter implements TwitterInterface{
   
     private $settings = array(
       'oauth_access_token' => "2849321127-VTfYJfhIobqLa1CUKSMDaQwv9tRs9bRB0uWGLdq",
@@ -9,6 +13,24 @@
       'consumer_key' => "cR6YV752XhP8lgvcfEwcQUO4y",
       'consumer_secret' => "4ZEV91gYD9wxUbprqeUX9lQcaea1IxDu74EAKUBFhRz1nJ1z7L"
     );
+
+
+    public function getTweets($count){
+      $user_timeline_url = "https://api.twitter.com/1.1/statuses/user_timeline.json";
+      $get_field = '?count=' . $count;
+
+      $tweets = json_decode($this->connection->setGetfield($get_field)
+        ->buildOauth($user_timeline_url, "GET")
+        ->performRequest(), $assoc = TRUE);
+
+      return $tweets;
+    }
+
+    
+    function __construct(){
+      $this->connection = new \TwitterAPIExchange($this->settings);
+    }    
+
 
   }
 
