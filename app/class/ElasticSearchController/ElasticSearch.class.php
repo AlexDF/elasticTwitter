@@ -6,22 +6,24 @@ class ElasticSearch {
   
   public $client;
 
-  function insertTweet($tweetData) {
+  function insertTweet($tweetSet) {
     $index = 'public_tweets';
     $type = 'tweet';
-    $id = $tweetData['id_str'];
 
-    $params = array();
-    $params['body']['text'] = $tweetData['text'];
-    $params['body']['user'] = $tweetData['user']['screen_name'];
-    $params['body']['time'] = $tweetData['created_at'];
-    //$params['body'] = array('text'=>'my_text', 'user'=>'user', 'time'=>'2:00');
-    $params['index'] = $index;
-    $params['type'] = $type;
-    $params['id'] = $id;
+    foreach($tweetSet as $tweetData){
+      $id = $tweetData['id_str'];
+      $params = array();
+      $params['body']['text'] = $tweetData['text'];
+      $params['body']['user'] = $tweetData['user']['screen_name'];
+      $params['body']['time'] = $tweetData['created_at'];
+      $params['index'] = $index;
+      $params['type'] = $type;
+      $params['id'] = $id;
     
-    $retDoc = $this->client->index($params);
-    return $retDoc;
+      $this->client->index($params);
+      
+    }
+   
   }
 
   function searchTweets($searchString) {
@@ -37,7 +39,6 @@ class ElasticSearch {
 
   function __construct() {
     $this->client = new \Elasticsearch\Client();
-
   }
 
 
