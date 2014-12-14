@@ -1,0 +1,16 @@
+html{
+  padding-left:20px;
+}
+
+a,th,td,h1,h2{
+  font-family:Helvetica, Arial, sans-serif;
+}
+
+th,td{
+  font-size:85%;
+  text-align:left;
+}
+
+tr:nth-child(odd){
+  background-color:#DDD;
+}
