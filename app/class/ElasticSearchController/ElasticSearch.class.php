@@ -27,10 +27,20 @@ class ElasticSearch {
   }
 
   function searchTweets($searchString) {
-  	$searchParams = array();
+    $searchParams = array();
     $searchParams['index'] = 'public_tweets';
     $searchParams['type'] = 'tweet';
     $searchParams['body']['query']['wildcard']['text'] = '*' . strtolower($searchString) . '*';
+
+    $retDoc = $this->client->search($searchParams);
+    return $retDoc;
+  }
+
+  function filterSearchByUser($userSearch) {
+    $searchParams = array();
+    $searchParams['index'] = 'public_tweets';
+    $searchParams['type'] = 'tweet';
+    $searchParams['body']['query']['match']['user'] = strtolower($userSearch);
 
     $retDoc = $this->client->search($searchParams);
     return $retDoc;
